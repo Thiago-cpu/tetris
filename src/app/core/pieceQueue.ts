@@ -19,4 +19,8 @@ export class PieceQueue {
     this.actualPiece = piece;
     return piece;
   }
+
+  pick() {
+    return this.queue.at(0)!;
+  }
 }

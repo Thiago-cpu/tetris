@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Game } from "../core/game";
+import { GameCanvas } from "../core/gameCanvas";
 
-function useDrawBoard(game: Game) {
+function useDrawBoard(game: GameCanvas) {
   const boardCanvas = useRef<HTMLCanvasElement>(null);
   const requestId = useRef<number>();
   const lastTimeRef = useRef(0);
@@ -45,7 +45,7 @@ function useDrawBoard(game: Game) {
   return boardCanvas;
 }
 
-export function BoardCanvas({ game }: { game: Game }) {
+export function BoardCanvas({ game }: { game: GameCanvas }) {
   const boardCanvas = useDrawBoard(game);
 
   return <canvas ref={boardCanvas} />;

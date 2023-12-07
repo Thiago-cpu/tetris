@@ -1,6 +1,8 @@
+import { Matrix } from "./matrix";
+
 export class Sprite {
-  body: number[][];
-  constructor(body: number[][]) {
+  body: Matrix<number>;
+  constructor(body: Matrix<number>) {
     this.body = body;
   }
 }

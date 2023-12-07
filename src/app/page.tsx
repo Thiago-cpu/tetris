@@ -1,12 +1,10 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { PieceQueue } from "./core/pieceQueue";
-import { Game } from "./core/game";
 import { PieceQueueCanvas } from "./View/pieceQueueCanvas";
 import { BoardCanvas } from "./View/boardCanvas";
 import { useEventListener } from "@/hooks/useEventListener";
+import { GameCanvas } from "./core/gameCanvas";
 
-const game = new Game();
+const game = new GameCanvas();
 
 export default function Home() {
   useEventListener("keydown", (e) => game.action(e.key));

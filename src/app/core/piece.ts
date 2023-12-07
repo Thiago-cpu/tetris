@@ -1,4 +1,5 @@
 import { AnimatedSprite } from "./animatedSprite";
+import { Matrix } from "./matrix";
 
 export class PieceFactory {
   static L = [
@@ -38,7 +39,9 @@ export class PieceFactory {
   static pieces = [this.L, this.J, this.Z, this.S, this.T, this.O, this.I];
 
   static randomPiece() {
-    return this.pieces[Math.floor(Math.random() * PieceFactory.pieces.length)];
+    return new Matrix(
+      this.pieces[Math.floor(Math.random() * PieceFactory.pieces.length)],
+    );
   }
 }
 

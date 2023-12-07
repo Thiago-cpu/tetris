@@ -29,6 +29,14 @@ export class AnimatedSprite {
     return this.frame;
   }
 
+  frameAt(index: number) {
+    return this.frames.at(index % this.frames.length)!;
+  }
+
+  setFrameIndex(index: number) {
+    this.actualFrameIndex = index % this.frames.length;
+  }
+
   get frame() {
     return this.frames.at(this.actualFrameIndex)!;
   }

@@ -10,6 +10,7 @@ const ACTIONS = {
   rotate_right: "rotate_right",
   rotate_left: "rotate_left",
   end: "end",
+  save: "save",
 } as const;
 
 const ROTATIONS = {
@@ -27,6 +28,7 @@ const KEY_TO_ACTION = {
   ArrowUp: ACTIONS.rotate_left,
   w: ACTIONS.rotate_left,
   z: ACTIONS.rotate_right,
+  c: ACTIONS.save,
   [SPACE]: ACTIONS.end,
 } as const;
 
@@ -77,8 +79,44 @@ export class Game {
   rotate(rotation: TPieceRotation) {
     const canRotate = true;
     if (!canRotate) return;
-    if (rotation === ROTATIONS.right) this.pieceQueue.actualPiece.next();
-    if (rotation === ROTATIONS.left) this.pieceQueue.actualPiece.prev();
+    const newFrameIndex =
+      this.actualPiece.actualFrameIndex +
+      (rotation === ROTATIONS.right ? 1 : -1);
+    const nextFrame = this.actualPiece.frameAt(newFrameIndex);
+
+    let rightWall = this.width;
+    for (let x = this.actualPiece.x; x < this.width; x++) {
+      const value = this.board.body[this.actualPiece.y][x];
+      if (value > 0) {
+        rightWall = x;
+        break;
+      }
+    }
+    let bottomWall = this.height;
+    for (let y = this.actualPiece.y; y < this.height; y++) {
+      const value = this.board.body[y][this.actualPiece.x];
+      if (value > 0) {
+        bottomWall = y;
+        break;
+      }
+    }
+
+    const newX = constrain(
+      0,
+      this.actualPiece.x,
+      rightWall - nextFrame.body.cols,
+    );
+    const newY = constrain(
+      0,
+      this.actualPiece.y,
+      bottomWall - nextFrame.body.length,
+    );
+
+    if (!this.board.validChunk(nextFrame.body, newX, newY)) return;
+
+    this.actualPiece.setFrameIndex(newFrameIndex);
+    this.actualPiece.x = newX;
+    this.actualPiece.y = newY;
   }
 
   action(key: string) {
@@ -96,6 +134,9 @@ export class Game {
         this.move("down");
       }
       this.nextPiece();
+    }
+    if (action === ACTIONS.save) {
+      this.pieceQueue.save();
     }
   }
 

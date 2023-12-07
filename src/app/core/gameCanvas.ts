@@ -106,7 +106,31 @@ export class GameCanvas extends Game {
       const x = relativeX + previewX;
       const y = relativeY + previewY;
 
-      const color = GameCanvas.valueToColor[value] + "60";
+      const color = GameCanvas.valueToColor[value] + "50";
+      ctx.fillStyle = color;
+      ctx.fillRect(
+        x * this.blockSize,
+        y * this.blockSize,
+        this.blockSize,
+        this.blockSize,
+      );
+      ctx.beginPath();
+      ctx.moveTo(x * this.blockSize + this.blockSize, y * this.blockSize);
+      ctx.lineTo(
+        x * this.blockSize + this.blockSize,
+        y * this.blockSize + this.blockSize,
+      );
+      ctx.lineTo(x * this.blockSize, y * this.blockSize + this.blockSize);
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+      ctx.closePath();
+    });
+  }
+
+  drawSavedPiece(ctx: CanvasRenderingContext2D) {
+    this.pieceQueue.savedPiece?.frame.body.forEachValue((value, x, y) => {
+      if (value === 0) return;
+      const color = GameCanvas.valueToColor[value];
       ctx.fillStyle = color;
       ctx.fillRect(
         x * this.blockSize,

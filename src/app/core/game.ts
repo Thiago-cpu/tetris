@@ -12,6 +12,11 @@ const ACTIONS = {
   end: "end",
 } as const;
 
+const ROTATIONS = {
+  right: "right",
+  left: "left",
+} as const;
+
 const KEY_TO_ACTION = {
   ArrowRight: ACTIONS.right,
   d: ACTIONS.right,
@@ -19,14 +24,15 @@ const KEY_TO_ACTION = {
   s: ACTIONS.down,
   ArrowLeft: ACTIONS.left,
   a: ACTIONS.left,
-  ArrowUp: ACTIONS.rotate_right,
-  w: ACTIONS.rotate_right,
-  z: ACTIONS.rotate_left,
+  ArrowUp: ACTIONS.rotate_left,
+  w: ACTIONS.rotate_left,
+  z: ACTIONS.rotate_right,
   [SPACE]: ACTIONS.end,
 } as const;
 
 type TKeyToAction = typeof KEY_TO_ACTION;
 type TPieceDirection = "left" | "right" | "down" | "static";
+type TPieceRotation = keyof typeof ROTATIONS;
 const MOVEMENT_TO_VECTOR: Record<TPieceDirection, readonly [number, number]> = {
   right: [1, 0],
   left: [-1, 0],
@@ -35,10 +41,6 @@ const MOVEMENT_TO_VECTOR: Record<TPieceDirection, readonly [number, number]> = {
 } as const;
 
 export class Game {
-  colors = {
-    border: "#efefef",
-    line: "#353435",
-  };
   blockSize = 30;
   board = new Board();
   pieceQueue = new PieceQueue({ x: this.width / 2, y: 0 });
@@ -72,19 +74,22 @@ export class Game {
     this.pieceQueue.actualPiece.y = newY;
   }
 
+  rotate(rotation: TPieceRotation) {
+    const canRotate = true;
+    if (!canRotate) return;
+    if (rotation === ROTATIONS.right) this.pieceQueue.actualPiece.next();
+    if (rotation === ROTATIONS.left) this.pieceQueue.actualPiece.prev();
+  }
+
   action(key: string) {
-    if (key in KEY_TO_ACTION) {
-    }
     const action = KEY_TO_ACTION[key as keyof TKeyToAction];
     if (!action) return;
     if (action in MOVEMENT_TO_VECTOR) this.move(action as TPieceDirection);
     if (action === ACTIONS.rotate_left) {
-      this.pieceQueue.actualPiece.next();
-      this.move("static");
+      this.rotate(ROTATIONS.left);
     }
     if (action === ACTIONS.rotate_right) {
-      this.pieceQueue.actualPiece.prev();
-      this.move("static");
+      this.rotate(ROTATIONS.right);
     }
     if (action === ACTIONS.end) {
       while (this.canMove("down")) {

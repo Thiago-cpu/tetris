@@ -51,15 +51,6 @@ type PieceProps = {
 };
 
 export class Piece extends AnimatedSprite {
-  static valueToColor = {
-    1: "#fb903e",
-    2: "#0d5ec8",
-    3: "#b42f1f",
-    4: "#62a14e",
-    5: "#874c34",
-    6: "#fd923f",
-    7: "#009dca",
-  } as Record<number, string>;
   x: number;
   y: number;
   constructor({ x, y }: PieceProps) {

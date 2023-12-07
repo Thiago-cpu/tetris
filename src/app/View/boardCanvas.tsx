@@ -29,6 +29,7 @@ function useDrawBoard(game: GameCanvas) {
       }
       ctx.reset();
       game.drawBoard(ctx);
+      game.drawPreviewPiece(ctx);
       game.drawActualPiece(ctx);
 
       lastTimeRef.current = currentTime;

@@ -1,7 +1,23 @@
 import { Game } from "./game";
+import { Matrix } from "./matrix";
 import { Piece } from "./piece";
 
 export class GameCanvas extends Game {
+  colors = {
+    border: "#efefef",
+    line: "#353435",
+  };
+
+  static valueToColor = {
+    1: "#fb903e",
+    2: "#0d5ec8",
+    3: "#b42f1f",
+    4: "#62a14e",
+    5: "#874c34",
+    6: "#fd923f",
+    7: "#009dca",
+  } as Record<number, string>;
+
   constructor() {
     super();
   }
@@ -29,7 +45,7 @@ export class GameCanvas extends Game {
     // draw solidified pieces
     this.board.body.forEachValue((value, x, y) => {
       if (value === 0) return;
-      ctx.fillStyle = Piece.valueToColor[value];
+      ctx.fillStyle = GameCanvas.valueToColor[value];
       ctx.fillRect(
         x * this.blockSize,
         y * this.blockSize,
@@ -55,7 +71,42 @@ export class GameCanvas extends Game {
       const x = relativeX + this.actualPiece.x;
       const y = relativeY + this.actualPiece.y;
 
-      const color = Piece.valueToColor[value];
+      const color = GameCanvas.valueToColor[value];
+      ctx.fillStyle = color;
+      ctx.fillRect(
+        x * this.blockSize,
+        y * this.blockSize,
+        this.blockSize,
+        this.blockSize,
+      );
+      ctx.beginPath();
+      ctx.moveTo(x * this.blockSize + this.blockSize, y * this.blockSize);
+      ctx.lineTo(
+        x * this.blockSize + this.blockSize,
+        y * this.blockSize + this.blockSize,
+      );
+      ctx.lineTo(x * this.blockSize, y * this.blockSize + this.blockSize);
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+      ctx.closePath();
+    });
+  }
+
+  drawPreviewPiece(ctx: CanvasRenderingContext2D) {
+    const previewX = this.actualPiece.x;
+    let previewY = this.actualPiece.y;
+
+    while (
+      this.board.validChunk(this.actualPiece.frame.body, previewX, previewY + 1)
+    ) {
+      previewY++;
+    }
+    this.actualPiece.frame.body.forEachValue((value, relativeX, relativeY) => {
+      if (value === 0) return;
+      const x = relativeX + previewX;
+      const y = relativeY + previewY;
+
+      const color = GameCanvas.valueToColor[value] + "60";
       ctx.fillStyle = color;
       ctx.fillRect(
         x * this.blockSize,
@@ -81,7 +132,7 @@ export class GameCanvas extends Game {
       piece.originalFrame.body.forEachValue((value, x, relativeY) => {
         const y = relativeY + absoluteY * 4;
         if (value === 0) return;
-        ctx.fillStyle = Piece.valueToColor[value];
+        ctx.fillStyle = GameCanvas.valueToColor[value];
         ctx.fillRect(
           x * this.blockSize,
           y * this.blockSize,

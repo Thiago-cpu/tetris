@@ -22,6 +22,18 @@ export class GameCanvas extends Game {
     super();
   }
 
+  draw(ctx: CanvasRenderingContext2D, deltaTime: number) {
+    this.elapsedTime += deltaTime;
+    if (this.elapsedTime >= 1000) {
+      this.gravity();
+      this.elapsedTime = 0;
+    }
+    ctx.reset();
+    this.drawBoard(ctx);
+    this.drawPreviewPiece(ctx);
+    this.drawActualPiece(ctx);
+  }
+
   drawBoard(ctx: CanvasRenderingContext2D) {
     // draw column lines
     ctx.fillStyle = this.colors.line;

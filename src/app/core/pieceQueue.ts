@@ -1,16 +1,30 @@
 import { Piece } from "./piece";
 
-export const defaultOrigin = { x: 0, y: 0 };
+export const defaultProps: Props = {
+  x: 0,
+  y: 0,
+  onActualPieceChange: () => {},
+};
 
+interface Props {
+  x: number;
+  y: number;
+  onActualPieceChange: () => void;
+}
 export class PieceQueue {
   queue: Piece[];
   actualPiece: Piece;
   savedPiece?: Piece;
   canSave: boolean = true;
   origin: { x: number; y: number };
+  onActualPieceChange: () => void;
 
-  constructor(origin: { x: number; y: number } = defaultOrigin) {
-    this.origin = origin;
+  constructor(props: Props = defaultProps) {
+    this.origin = {
+      x: props.x,
+      y: props.y,
+    };
+    this.onActualPieceChange = props.onActualPieceChange;
     this.queue = new Array(5).fill(0).map(() => new Piece(this.origin));
     this.actualPiece = new Piece(this.origin);
   }
@@ -23,6 +37,7 @@ export class PieceQueue {
     const piece = this.queue.shift()!;
     this.queue.push(new Piece(this.origin));
     this.actualPiece = piece;
+    this.onActualPieceChange();
     this.canSave = true;
     return piece;
   }
@@ -35,6 +50,7 @@ export class PieceQueue {
     this.savedPiece.y = this.origin.y;
     if (prevSavedPiece) {
       this.actualPiece = prevSavedPiece;
+      this.onActualPieceChange();
     } else {
       this.shift();
     }

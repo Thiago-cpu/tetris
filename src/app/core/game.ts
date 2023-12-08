@@ -45,7 +45,12 @@ const MOVEMENT_TO_VECTOR: Record<TPieceDirection, readonly [number, number]> = {
 export class Game {
   blockSize = 30;
   board = new Board();
-  pieceQueue = new PieceQueue({ x: this.width / 2, y: 0 });
+  elapsedTime = 0;
+  pieceQueue = new PieceQueue({
+    x: this.width / 2,
+    y: 0,
+    onActualPieceChange: () => (this.elapsedTime = 0),
+  });
 
   canMove(direction: TPieceDirection) {
     const [x, y] = MOVEMENT_TO_VECTOR[direction];

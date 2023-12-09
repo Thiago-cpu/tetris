@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { GameCanvas } from "../core/gameCanvas";
+import { Game_2D } from "../2D/game_2D";
 
-function useDrawPieceQueue(game: GameCanvas) {
+function useDrawPieceQueue(game: Game_2D) {
   const pieceQueueCanvas = useRef<HTMLCanvasElement>(null);
   const requestId = useRef<number>();
 
@@ -28,7 +28,7 @@ function useDrawPieceQueue(game: GameCanvas) {
   return pieceQueueCanvas;
 }
 
-export function PieceQueueCanvas({ game }: { game: GameCanvas }) {
+export function PieceQueueCanvas({ game }: { game: Game_2D }) {
   const pieceQueueCanvas = useDrawPieceQueue(game);
   return <canvas ref={pieceQueueCanvas} />;
 }

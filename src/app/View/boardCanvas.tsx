@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { GameCanvas } from "../core/gameCanvas";
+import { Game_2D } from "../2D/game_2D";
 import useDraw from "@/hooks/useDraw";
 
-function useDrawBoard(game: GameCanvas) {
+function useDrawBoard(game: Game_2D) {
   const boardCanvas = useRef<HTMLCanvasElement>(null);
 
   useDraw((deltaTime) => {
@@ -16,7 +16,7 @@ function useDrawBoard(game: GameCanvas) {
   return boardCanvas;
 }
 
-export function BoardCanvas({ game }: { game: GameCanvas }) {
+export function BoardCanvas({ game }: { game: Game_2D }) {
   const boardCanvas = useDrawBoard(game);
 
   return (

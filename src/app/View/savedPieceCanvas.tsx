@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { GameCanvas } from "../core/gameCanvas";
+import { Game_2D } from "../2D/game_2D";
 
-function useDrawSavedPiece(game: GameCanvas) {
+function useDrawSavedPiece(game: Game_2D) {
   const savedPieceCanvas = useRef<HTMLCanvasElement>(null);
   const requestId = useRef<number>();
 
@@ -28,7 +28,7 @@ function useDrawSavedPiece(game: GameCanvas) {
   return savedPieceCanvas;
 }
 
-export function SavedPieceCanvas({ game }: { game: GameCanvas }) {
+export function SavedPieceCanvas({ game }: { game: Game_2D }) {
   const pieceQueueCanvas = useDrawSavedPiece(game);
   return <canvas ref={pieceQueueCanvas} />;
 }

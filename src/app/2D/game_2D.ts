@@ -1,8 +1,8 @@
-import { Game } from "./game";
-import { Matrix } from "./matrix";
-import { Piece } from "./piece";
+import { Game } from "../core/game";
+import { Matrix } from "../core/matrix";
+import { Piece } from "../core/piece";
 
-export class GameCanvas extends Game {
+export class Game_2D extends Game {
   colors = {
     border: "#efefef",
     line: "#353435",
@@ -57,7 +57,7 @@ export class GameCanvas extends Game {
     // draw solidified pieces
     this.board.body.forEachValue((value, x, y) => {
       if (value === 0) return;
-      ctx.fillStyle = GameCanvas.valueToColor[value];
+      ctx.fillStyle = Game_2D.valueToColor[value];
       ctx.fillRect(
         x * this.blockSize,
         y * this.blockSize,
@@ -83,7 +83,7 @@ export class GameCanvas extends Game {
       const x = relativeX + this.actualPiece.x;
       const y = relativeY + this.actualPiece.y;
 
-      const color = GameCanvas.valueToColor[value];
+      const color = Game_2D.valueToColor[value];
       ctx.fillStyle = color;
       ctx.fillRect(
         x * this.blockSize,
@@ -119,7 +119,7 @@ export class GameCanvas extends Game {
       const x = relativeX + previewX;
       const y = relativeY + previewY;
 
-      const color = GameCanvas.valueToColor[value] + "50";
+      const color = Game_2D.valueToColor[value] + "50";
       ctx.fillStyle = color;
       ctx.fillRect(
         x * this.blockSize,
@@ -143,7 +143,7 @@ export class GameCanvas extends Game {
   drawSavedPiece(ctx: CanvasRenderingContext2D) {
     this.pieceQueue.savedPiece?.frame.body.forEachValue((value, x, y) => {
       if (value === 0) return;
-      const color = GameCanvas.valueToColor[value];
+      const color = Game_2D.valueToColor[value];
       ctx.fillStyle = color;
       ctx.fillRect(
         x * this.blockSize,
@@ -169,7 +169,7 @@ export class GameCanvas extends Game {
       piece.originalFrame.body.forEachValue((value, x, relativeY) => {
         const y = relativeY + absoluteY * 4;
         if (value === 0) return;
-        ctx.fillStyle = GameCanvas.valueToColor[value];
+        ctx.fillStyle = Game_2D.valueToColor[value];
         ctx.fillRect(
           x * this.blockSize,
           y * this.blockSize,

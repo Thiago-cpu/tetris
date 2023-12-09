@@ -24,7 +24,7 @@ export class GameCanvas extends Game {
 
   draw(ctx: CanvasRenderingContext2D, deltaTime: number) {
     this.elapsedTime += deltaTime;
-    if (this.elapsedTime >= 1000) {
+    if (this.elapsedTime >= 600) {
       this.gravity();
       this.elapsedTime = 0;
     }
@@ -113,6 +113,7 @@ export class GameCanvas extends Game {
     ) {
       previewY++;
     }
+    if (previewY == this.actualPiece.y) return;
     this.actualPiece.frame.body.forEachValue((value, relativeX, relativeY) => {
       if (value === 0) return;
       const x = relativeX + previewX;

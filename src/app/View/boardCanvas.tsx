@@ -6,7 +6,6 @@ import useDraw from "@/hooks/useDraw";
 
 function useDrawBoard(game: GameCanvas) {
   const boardCanvas = useRef<HTMLCanvasElement>(null);
-  const elapsedTimeRef = useRef(0);
 
   useDraw((deltaTime) => {
     const ctx = boardCanvas.current?.getContext("2d");

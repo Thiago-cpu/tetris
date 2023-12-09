@@ -154,12 +154,21 @@ export class Game {
   }
 
   nextPiece() {
-    this.board.setChunk(
+    const pieceSettled = this.board.setChunk(
       this.actualPiece.frame.body,
       this.actualPiece.x,
       this.actualPiece.y,
     );
-    this.pieceQueue.shift();
+    if (!pieceSettled) this.board.reset();
+    const newActualPiece = this.pieceQueue.shift();
+    if (
+      !this.board.validChunk(
+        newActualPiece.frame.body,
+        newActualPiece.x,
+        newActualPiece.y,
+      )
+    )
+      this.board.reset();
   }
 
   get actualPiece() {

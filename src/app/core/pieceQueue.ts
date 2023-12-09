@@ -6,17 +6,20 @@ export const defaultProps: Props = {
   onActualPieceChange: () => {},
 };
 
-interface Props {
+interface Cords {
   x: number;
   y: number;
-  onActualPieceChange: () => void;
 }
+
+type Props = Cords & {
+  onActualPieceChange: () => void;
+};
 export class PieceQueue {
   queue: Piece[];
   actualPiece: Piece;
   savedPiece?: Piece;
   canSave: boolean = true;
-  origin: { x: number; y: number };
+  origin: Cords;
   onActualPieceChange: () => void;
 
   constructor(props: Props = defaultProps) {

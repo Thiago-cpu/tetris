@@ -6,7 +6,7 @@ export const defaultProps: Props = {
   onActualPieceChange: () => {},
 };
 
-interface Cords {
+export interface Cords {
   x: number;
   y: number;
 }

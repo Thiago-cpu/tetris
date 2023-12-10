@@ -47,7 +47,7 @@ export class Game {
   board = new Board();
   elapsedTime = 0;
   pieceQueue = new PieceQueue({
-    x: this.width / 2,
+    x: this.width / 2 - 1,
     y: 0,
     onActualPieceChange: () => (this.elapsedTime = 0),
   });
@@ -169,6 +169,14 @@ export class Game {
       )
     )
       this.board.reset();
+  }
+
+  update(deltaTime: number) {
+    this.elapsedTime += deltaTime;
+    if (this.elapsedTime >= 600) {
+      this.gravity();
+      this.elapsedTime = 0;
+    }
   }
 
   get actualPiece() {

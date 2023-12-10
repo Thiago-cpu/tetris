@@ -23,11 +23,7 @@ export class Game_2D extends Game {
   }
 
   draw(ctx: CanvasRenderingContext2D, deltaTime: number) {
-    this.elapsedTime += deltaTime;
-    if (this.elapsedTime >= 600) {
-      this.gravity();
-      this.elapsedTime = 0;
-    }
+    this.update(deltaTime);
     ctx.reset();
     this.drawBoard(ctx);
     this.drawPreviewPiece(ctx);

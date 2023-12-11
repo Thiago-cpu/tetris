@@ -1,6 +1,8 @@
 import {
   BoxGeometry,
+  CameraHelper,
   CanvasTexture,
+  DirectionalLight,
   Mesh,
   MeshPhysicalMaterial,
   MeshPhysicalMaterialParameters,
@@ -16,7 +18,7 @@ type MetalBaseProps = {
   position?: Cords3D;
 };
 
-export class MetalBase extends Mesh {
+export class Base extends Mesh {
   constructor({ material = {}, geometry = [], position }: MetalBaseProps) {
     const texture = new CanvasTexture(new FlakesTexture());
     texture.wrapS = RepeatWrapping;
@@ -30,7 +32,7 @@ export class MetalBase extends Mesh {
         clearcoat: 1.0,
         clearcoatRoughness: 0.1,
         color: 0x8418ca,
-        metalness: 1,
+        metalness: 0.7,
         roughness: 0.5,
         normalMap: texture,
         normalScale: new Vector2(0.15, 0.15),
@@ -41,6 +43,7 @@ export class MetalBase extends Mesh {
     // Invert the y-coordinate to align Three.js axis system with the canvas system
     this.position.y = (position?.y ?? this.position.y) * -1;
     this.position.z = position?.z ?? this.position.z;
+    this.receiveShadow = true;
   }
 
   dispose() {

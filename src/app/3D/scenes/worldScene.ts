@@ -2,10 +2,11 @@ import { Game } from "@/app/core/game";
 import {
   ACESFilmicToneMapping,
   AmbientLight,
+  DirectionalLight,
   PerspectiveCamera,
-  PointLight,
   SRGBColorSpace,
   Scene,
+  VSMShadowMap,
   WebGLRenderer,
 } from "three";
 import { ColorSystem } from "./boardScene";
@@ -14,8 +15,8 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 export class WorldScene extends Scene {
   game: Game;
   colorSystem: ColorSystem;
-  ambientLight = new AmbientLight();
-  pointLight = new PointLight(0xffffff, 1000);
+  ambientLight = new AmbientLight(0xffffff, 1);
+  light = new DirectionalLight(0xffffff, 20);
   camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -32,9 +33,14 @@ export class WorldScene extends Scene {
     this.translateX((this.game.width / 2) * -1);
     this.translateY(this.game.height / 2);
     this.camera.position.set(0, 0, 25);
-    this.pointLight.position.set(0, 5, 3);
+    this.setupLights();
+  }
+
+  setupLights() {
     this.add(this.ambientLight);
-    this.add(this.pointLight);
+    this.light.position.set(0, 25, 4);
+    this.add(this.light);
+    this.add(this.light.shadow.camera);
   }
 
   update() {

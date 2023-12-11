@@ -1,6 +1,6 @@
 import { Color } from "three";
 import { Game } from "../core/game";
-import { MetalBase } from "./metalBase";
+import { Base } from "./base";
 import { BoardScene } from "./scenes/boardScene";
 import { SavedPieceScene } from "./scenes/savedPieceScene";
 import { WorldScene } from "./scenes/worldScene";
@@ -18,7 +18,7 @@ export class Game_3D {
   world: WorldScene;
   board: BoardScene;
   savedPiece: SavedPieceScene;
-  metalBase: MetalBase;
+  metalBase: Base;
   game: Game;
 
   constructor() {
@@ -26,7 +26,7 @@ export class Game_3D {
     this.world = new WorldScene(this.game, Game_3D.valueToColor);
     this.board = new BoardScene(this.game, Game_3D.valueToColor);
     this.savedPiece = new SavedPieceScene(this.game, Game_3D.valueToColor);
-    this.metalBase = new MetalBase({
+    this.metalBase = new Base({
       geometry: [this.width + 5, 1, 5],
       position: { x: this.width / 2, y: this.height, z: 0 },
     });

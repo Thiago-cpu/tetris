@@ -29,7 +29,8 @@ export class BoardScene extends Scene {
         const x = relativeX + this.game.actualPiece.x;
         const y = relativeY + this.game.actualPiece.y;
         const color = this.colorSystem[value];
-        this.add(new Cube({ mesh: { color }, position: { x, y } }));
+        const cube = new Cube({ mesh: { color }, position: { x, y } });
+        this.add(cube);
       },
     );
   }
@@ -38,7 +39,8 @@ export class BoardScene extends Scene {
     this.game.board.body.forEachValue((value, x, y) => {
       if (value === 0) return;
       const color = this.colorSystem[value];
-      this.add(new Cube({ mesh: { color }, position: { x, y } }));
+      const cube = new Cube({ mesh: { color }, position: { x, y } });
+      this.add(cube);
     });
   }
 

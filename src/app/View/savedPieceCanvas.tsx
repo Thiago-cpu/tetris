@@ -28,7 +28,11 @@ function useDrawSavedPiece(game: Game_2D) {
   return savedPieceCanvas;
 }
 
-export function SavedPieceCanvas({ game }: { game: Game_2D }) {
+export function SavedPieceCanvas({
+  graphicEngine: game,
+}: {
+  graphicEngine: Game_2D;
+}) {
   const pieceQueueCanvas = useDrawSavedPiece(game);
   return <canvas ref={pieceQueueCanvas} />;
 }

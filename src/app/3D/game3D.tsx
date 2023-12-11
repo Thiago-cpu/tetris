@@ -4,23 +4,28 @@ import React, { useEffect, useRef } from "react";
 import { Game_3D } from "./game_3D";
 import { useEventListener } from "@/hooks/useEventListener";
 import useDraw from "@/hooks/useDraw";
+import { Game } from "../core/game";
 
-export default function Page() {
+interface Game3DProps {
+  gameEngine: Game;
+}
+
+export default function Game3D({ gameEngine }: Game3DProps) {
   const gameRef = useRef<Game_3D | null>(null);
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   useEventListener("keydown", (e) => gameRef.current?.game.action(e.key));
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !window) return;
-    const game = new Game_3D();
+    const game = new Game_3D(gameEngine);
     gameRef.current = game;
 
     game.world.setup(container);
     return () => {
       game.world.cleanup(container);
     };
-  }, []);
+  }, [gameEngine]);
 
   useDraw((deltaTime) => {
     const game = gameRef.current;
@@ -28,10 +33,5 @@ export default function Page() {
     game.draw(deltaTime);
   });
 
-  return (
-    <main
-      ref={containerRef}
-      className="flex min-h-screen items-center justify-center gap-8"
-    ></main>
-  );
+  return <div ref={containerRef}></div>;
 }

@@ -4,6 +4,7 @@ import { Base } from "./base";
 import { BoardScene } from "./scenes/boardScene";
 import { SavedPieceScene } from "./scenes/savedPieceScene";
 import { WorldScene } from "./scenes/worldScene";
+import { PieceQueueScene } from "./scenes/pieceQueueScene";
 
 export class Game_3D {
   static valueToColor = {
@@ -20,12 +21,14 @@ export class Game_3D {
   savedPiece: SavedPieceScene;
   metalBase: Base;
   game: Game;
+  pieceQueue: PieceQueueScene;
 
-  constructor() {
-    this.game = new Game();
+  constructor(gameEngine: Game) {
+    this.game = gameEngine;
     this.world = new WorldScene(this.game, Game_3D.valueToColor);
     this.board = new BoardScene(this.game, Game_3D.valueToColor);
     this.savedPiece = new SavedPieceScene(this.game, Game_3D.valueToColor);
+    this.pieceQueue = new PieceQueueScene(this.game, Game_3D.valueToColor);
     this.metalBase = new Base({
       geometry: [this.width + 5, 1, 5],
       position: { x: this.width / 2, y: this.height, z: 0 },
@@ -33,15 +36,18 @@ export class Game_3D {
     this.world.add(this.board);
     this.world.add(this.savedPiece);
     this.world.add(this.metalBase);
+    this.world.add(this.pieceQueue);
   }
 
   draw(deltaTime: number) {
     this.savedPiece.cleanup();
     this.board.cleanup();
+    this.pieceQueue.cleanup();
     this.game.update(deltaTime);
     this.world.update();
-    this.board.draw();
     this.savedPiece.draw(deltaTime);
+    this.board.draw();
+    this.pieceQueue.draw(deltaTime);
     this.world.render();
   }
 

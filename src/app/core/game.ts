@@ -43,7 +43,6 @@ const MOVEMENT_TO_VECTOR: Record<TPieceDirection, readonly [number, number]> = {
 } as const;
 
 export class Game {
-  blockSize = 30;
   board = new Board();
   elapsedTime = 0;
   pieceQueue = new PieceQueue({

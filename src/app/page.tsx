@@ -1,19 +1,34 @@
 "use client";
-import { PieceQueueCanvas } from "./View/pieceQueueCanvas";
-import { BoardCanvas } from "./View/boardCanvas";
-import { useEventListener } from "@/hooks/useEventListener";
-import { Game_2D } from "./2D/game_2D";
-import { SavedPieceCanvas } from "./View/savedPieceCanvas";
+import { useState } from "react";
+import Game3D from "./3D/game3D";
+import Game2D from "./2D/game2D";
+import { Button } from "@/components/ui/button";
+import { Game } from "./core/game";
 
-const game = new Game_2D();
+const game = new Game();
 
 export default function Home() {
-  useEventListener("keydown", (e) => game.action(e.key));
+  const [render3DGame, setShouldRender3DGame] = useState(false);
+
   return (
-    <main className="flex min-h-screen items-center justify-center gap-8">
-      <SavedPieceCanvas game={game} />
-      <BoardCanvas game={game} />
-      <PieceQueueCanvas game={game} />
+    <main className="relative flex min-h-screen items-center justify-center gap-8">
+      <Button
+        variant="outline"
+        className="absolute top-5"
+        onClick={(e) => {
+          // console.log({ e });
+          e.currentTarget.blur();
+          e.preventDefault();
+          setShouldRender3DGame((p) => !p);
+        }}
+      >
+        {render3DGame ? "2D" : "3D"}
+      </Button>
+      {render3DGame ? (
+        <Game3D gameEngine={game} />
+      ) : (
+        <Game2D gameEngine={game} />
+      )}
     </main>
   );
 }

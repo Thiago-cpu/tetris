@@ -6,7 +6,6 @@ import {
   PerspectiveCamera,
   SRGBColorSpace,
   Scene,
-  VSMShadowMap,
   WebGLRenderer,
 } from "three";
 import { ColorSystem } from "./boardScene";

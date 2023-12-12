@@ -4,33 +4,33 @@ import React, { useEffect, useRef } from "react";
 import { Game_3D } from "./game_3D";
 import { useEventListener } from "@/hooks/useEventListener";
 import useDraw from "@/hooks/useDraw";
-import { Game } from "../core/game";
+import { useGameEngine } from "../store/gameEngine";
 
-interface Game3DProps {
-  gameEngine: Game;
-}
-
-export default function Game3D({ gameEngine }: Game3DProps) {
-  const gameRef = useRef<Game_3D | null>(null);
+export default function Game3D() {
+  const game = useGameEngine();
+  const graphicEngineRef = useRef<Game_3D | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  useEventListener("keydown", (e) => gameRef.current?.game.action(e.key));
+  useEventListener(
+    "keydown",
+    (e) => graphicEngineRef.current?.game.action(e.key),
+  );
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !window) return;
-    const game = new Game_3D(gameEngine);
-    gameRef.current = game;
+    const graphicEngine = new Game_3D(game);
+    graphicEngineRef.current = graphicEngine;
 
-    game.world.setup(container);
+    graphicEngine.world.setup(container);
     return () => {
-      game.world.cleanup(container);
+      graphicEngine.world.cleanup(container);
     };
-  }, [gameEngine]);
+  }, [game]);
 
   useDraw((deltaTime) => {
-    const game = gameRef.current;
-    if (!game) return;
-    game.draw(deltaTime);
+    const graphicEngine = graphicEngineRef.current;
+    if (!graphicEngine) return;
+    graphicEngine.draw(deltaTime);
   });
 
   return <div ref={containerRef}></div>;

@@ -1,24 +1,20 @@
 "use client";
 import { useEventListener } from "@/hooks/useEventListener";
 import { Game_2D } from "./game_2D";
-import { SavedPieceCanvas } from "../View/savedPieceCanvas";
-import { BoardCanvas } from "../View/boardCanvas";
-import { PieceQueueCanvas } from "../View/pieceQueueCanvas";
-import { useRef } from "react";
-import { Game } from "../core/game";
+import { SavedPieceCanvas } from "./savedPieceCanvas";
+import { BoardCanvas } from "./boardCanvas";
+import { PieceQueueCanvas } from "./pieceQueueCanvas";
+import { useGameEngine } from "../store/gameEngine";
 
-interface Game3DProps {
-  gameEngine: Game;
-}
-
-export default function Game2D({ gameEngine }: Game3DProps) {
-  const gameRef = useRef<Game_2D>(new Game_2D(gameEngine));
-  useEventListener("keydown", (e) => gameRef.current.game.action(e.key));
+export default function Game2D() {
+  const game = useGameEngine();
+  const graphicEngine = new Game_2D(game);
+  useEventListener("keydown", (e) => graphicEngine.game.action(e.key));
   return (
     <>
-      <SavedPieceCanvas graphicEngine={gameRef.current} />
-      <BoardCanvas graphicEngine={gameRef.current} />
-      <PieceQueueCanvas graphicEngine={gameRef.current} />
+      <SavedPieceCanvas graphicEngine={graphicEngine} />
+      <BoardCanvas graphicEngine={graphicEngine} />
+      <PieceQueueCanvas graphicEngine={graphicEngine} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Game_2D } from "../2D/game_2D";
+import { useRef } from "react";
+import { Game_2D } from "./game_2D";
 import useDraw from "@/hooks/useDraw";
 
 function useDrawBoard(graphicEngine: Game_2D) {

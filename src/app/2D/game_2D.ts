@@ -15,7 +15,7 @@ export class Game_2D {
     2: "#0d5ec8",
     3: "#b42f1f",
     4: "#62a14e",
-    5: "#874c34",
+    5: "#af298a",
     6: "#fd923f",
     7: "#009dca",
   } as Record<number, string>;

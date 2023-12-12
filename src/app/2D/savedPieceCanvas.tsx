@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Game_2D } from "../2D/game_2D";
+import { Game_2D } from "./game_2D";
 
 function useDrawSavedPiece(game: Game_2D) {
   const savedPieceCanvas = useRef<HTMLCanvasElement>(null);

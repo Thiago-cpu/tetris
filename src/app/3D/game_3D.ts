@@ -12,7 +12,7 @@ export class Game_3D {
     2: new Color("#0d5ec8"),
     3: new Color("#b42f1f"),
     4: new Color("#62a14e"),
-    5: new Color("#874c34"),
+    5: new Color("#af298a"),
     6: new Color("#fd923f"),
     7: new Color("#009dca"),
   } as Record<number, Color>;

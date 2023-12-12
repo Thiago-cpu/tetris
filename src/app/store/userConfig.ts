@@ -8,8 +8,13 @@ export const GAME_MULTIVERSE = {
 } as const;
 
 type TypeofGame_Mutliverse = typeof GAME_MULTIVERSE;
-
 export type GameUniverses = TypeofGame_Mutliverse[keyof TypeofGame_Mutliverse];
+
+export const gameUniverses = [
+  "ASCII",
+  "2D",
+  "3D",
+] as const satisfies GameUniverses[];
 
 interface UserConfigState {
   gameUniverse: GameUniverses;

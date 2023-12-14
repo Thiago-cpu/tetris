@@ -1,35 +1,38 @@
 import { create } from "zustand";
-import { persist, StateStorage, createJSONStorage } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-export const GAME_MULTIVERSE = {
-  ASCII: "ASCII",
-  ["2D"]: "2D",
-  ["3D"]: "3D",
-} as const;
+export const allGameUniverses = ["ASCII", "2D", "3D"] as const;
 
-type TypeofGame_Mutliverse = typeof GAME_MULTIVERSE;
-export type GameUniverses = TypeofGame_Mutliverse[keyof TypeofGame_Mutliverse];
-
-export const gameUniverses = [
-  "ASCII",
-  "2D",
-  "3D",
-] as const satisfies GameUniverses[];
+export type GameUniverses = (typeof allGameUniverses)[number];
 
 interface UserConfigState {
+  randomMode: boolean;
+  setRandomMode: (randomMode: boolean) => void;
   gameUniverse: GameUniverses;
   setGameUniverse: (universe: GameUniverses) => void;
 }
 
-export const useUserConfig = create(
-  persist<UserConfigState>(
-    (set, get) => ({
-      gameUniverse: "2D",
-      setGameUniverse: (u) => set({ gameUniverse: u }),
-    }),
-    {
-      name: "user-config-storage",
-      storage: createJSONStorage(() => localStorage),
-    },
-  ),
-);
+const interval: {
+  current?: NodeJS.Timeout;
+} = { current: undefined };
+
+export const useUserConfig = create<UserConfigState>((set, get) => ({
+  gameUniverse: "2D",
+  randomMode: false,
+  setGameUniverse: (u) => set({ gameUniverse: u }),
+  setRandomMode: (randomMode) => {
+    if (interval.current) clearInterval(interval.current);
+    if (!randomMode) return set({ randomMode });
+    interval.current = setInterval(() => {
+      set((state) => {
+        const otherUniverses = allGameUniverses.filter(
+          (u) => u !== state.gameUniverse,
+        );
+        const randomUniverse =
+          otherUniverses[Math.floor(Math.random() * otherUniverses.length)];
+        return { gameUniverse: randomUniverse };
+      });
+    }, 10 * 1000);
+    set({ randomMode });
+  },
+}));

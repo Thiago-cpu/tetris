@@ -1,17 +1,38 @@
 "use client";
 import {
   GameUniverses,
-  gameUniverses,
+  allGameUniverses,
   useUserConfig,
 } from "../store/userConfig";
-import { useTransition } from "react";
+import { useId, useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
-export default function SelectUniverse() {
+function RandomMode() {
+  const id = useId();
   const [pending, startTransition] = useTransition();
-  const { gameUniverse, setGameUniverse } = useUserConfig(
-    ({ gameUniverse, setGameUniverse }) => ({ gameUniverse, setGameUniverse }),
+  const { randomMode, setRandomMode } = useUserConfig();
+  return (
+    <div className="flex items-center space-x-2">
+      <Switch
+        checked={randomMode}
+        onCheckedChange={(checked) =>
+          startTransition(() => setRandomMode(checked))
+        }
+        onClick={(e) => e.currentTarget.blur()}
+        id={id}
+        disabled={pending}
+      />
+      <Label htmlFor={id}>Random Mode</Label>
+    </div>
   );
+}
+
+export default function GameConfig() {
+  const [pending, startTransition] = useTransition();
+  const setGameUniverse = useUserConfig((state) => state.setGameUniverse);
+  const randomMode = useUserConfig((state) => state.randomMode);
 
   const transitionateUniverse = (universe: GameUniverses) => () => {
     startTransition(() => setGameUniverse(universe));
@@ -19,15 +40,17 @@ export default function SelectUniverse() {
 
   return (
     <div className="absolute top-12 flex gap-8">
-      {gameUniverses.map((universe) => (
+      {allGameUniverses.map((universe) => (
         <Button
-          disabled={pending}
+          key={universe}
+          disabled={pending || randomMode}
           variant="outline"
           onClick={transitionateUniverse(universe)}
         >
           {universe}
         </Button>
       ))}
+      <RandomMode />
     </div>
   );
 }

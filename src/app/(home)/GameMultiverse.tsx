@@ -1,11 +1,13 @@
 "use client";
+import Game2D from "../2D/game2D";
+import Game3D from "../3D/game3D";
+import GameASCII from "../ASCII/gameASCII";
 import { GameUniverses, useUserConfig } from "../store/userConfig";
-import dynamic from "next/dynamic";
 
-const nameToUniverse: Record<GameUniverses, ReturnType<typeof dynamic>> = {
-  "2D": dynamic(() => import("../2D/game2D"), { ssr: false }),
-  "3D": dynamic(() => import("../3D/game3D"), { ssr: false }),
-  ASCII: dynamic(() => import("../ASCII/gameASCII"), { ssr: false }),
+const nameToUniverse: Record<GameUniverses, () => JSX.Element> = {
+  "2D": Game2D,
+  "3D": Game3D,
+  ASCII: GameASCII,
 } as const;
 
 export default function GameMultiverse() {
